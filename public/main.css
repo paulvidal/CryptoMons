@@ -1,0 +1,27 @@
+.title {
+  display: flex;
+  align-items: center; }
+
+.logo {
+  width: 45px;
+  height: 45px;
+  margin-right: 10px; }
+
+.gallery {
+  margin-top: 40px; }
+
+.card-infos {
+  margin: 5px; }
+  .card-infos p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: #337ab7 !important;
+    text-decoration: none !important; }
+
+.withdraw {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center; }
+  .withdraw .balance {
+    margin: 0 0 0 15px;
+    font-weight: bold; }
