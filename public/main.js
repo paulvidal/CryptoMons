@@ -40979,20 +40979,13 @@ var MyCardCollection = function (_Component) {
 
     _this.fetchCards.bind(_this);
     _this.onWithdraw.bind(_this);
-
-    // Get account balance
-    _contractManager2.default.getContractInstance().getBalanceToWithdraw({
-      from: web3.eth.accounts[0]
-    }, function (err, result) {
-      if (result) {
-        _this.setState({
-          sellBalance: (0, _etherUtil.weiToEther)(parseInt(result)) // Price is put in ether
-        });
-      }
-    });
+    _this.fetchBalance(_this);
 
     // Fetch owners cards
     _this.fetchCards();
+
+    // Get account balance
+    _this.fetchBalance();
 
     // Subscribe to Transfer event callbacks
     _contractManager2.default.getContractInstance().Transfer({}, function (error, result) {
@@ -41006,6 +40999,9 @@ var MyCardCollection = function (_Component) {
         if (newOwner === web3.eth.accounts[0] || oldOwner === web3.eth.accounts[0]) {
           // Fetch owners cards if his address is included in the transfer
           _this.fetchCards();
+
+          // Update balance
+          _this.fetchBalance();
         }
       }
     });
@@ -41043,6 +41039,21 @@ var MyCardCollection = function (_Component) {
       });
     }
   }, {
+    key: 'fetchBalance',
+    value: function fetchBalance() {
+      var _this3 = this;
+
+      _contractManager2.default.getContractInstance().getBalanceToWithdraw({
+        from: web3.eth.accounts[0]
+      }, function (err, result) {
+        if (result) {
+          _this3.setState({
+            sellBalance: (0, _etherUtil.weiToEther)(parseInt(result)) // Price is put in ether
+          });
+        }
+      });
+    }
+  }, {
     key: 'onWithdraw',
     value: function onWithdraw() {
       _contractManager2.default.getContractInstance().withdrawBalance({
@@ -41057,7 +41068,7 @@ var MyCardCollection = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var sellBalanceEmpty = _react2.default.createElement(
         'button',
@@ -41067,7 +41078,7 @@ var MyCardCollection = function (_Component) {
       var sellBalancePositive = _react2.default.createElement(
         'button',
         { type: 'button', className: 'btn btn-warning pull-left col-xs-12 col-sm-3', onClick: function onClick() {
-            return _this3.onWithdraw();
+            return _this4.onWithdraw();
           } },
         'Withdraw balance'
       );

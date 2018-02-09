@@ -15,20 +15,13 @@ class MyCardCollection extends Component {
 
     this.fetchCards.bind(this);
     this.onWithdraw.bind(this);
-
-    // Get account balance
-    contractManager.getContractInstance().getBalanceToWithdraw({
-      from: web3.eth.accounts[0]
-    }, (err, result) => {
-      if (result) {
-        this.setState({
-          sellBalance: weiToEther(parseInt(result)) // Price is put in ether
-        });
-      }
-    });
+    this.fetchBalance(this);
 
     // Fetch owners cards
     this.fetchCards();
+
+    // Get account balance
+    this.fetchBalance();
 
     // Subscribe to Transfer event callbacks
     contractManager.getContractInstance().Transfer({}, (error, result) => {
@@ -42,6 +35,9 @@ class MyCardCollection extends Component {
         if (newOwner === web3.eth.accounts[0] || oldOwner === web3.eth.accounts[0]) {
           // Fetch owners cards if his address is included in the transfer
           this.fetchCards();
+
+          // Update balance
+          this.fetchBalance();
         }
       }
     });
@@ -67,6 +63,18 @@ class MyCardCollection extends Component {
       if (result) {
         this.setState({
           cards: _.map(result, (id) => parseInt(id))
+        });
+      }
+    });
+  }
+
+  fetchBalance() {
+    contractManager.getContractInstance().getBalanceToWithdraw({
+      from: web3.eth.accounts[0]
+    }, (err, result) => {
+      if (result) {
+        this.setState({
+          sellBalance: weiToEther(parseInt(result)) // Price is put in ether
         });
       }
     });
