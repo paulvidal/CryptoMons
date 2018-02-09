@@ -7,4 +7,4 @@ Application running on the Ropsten test net (Ethereum test blockchain).
 
 All trading follow a modified version of the ERC721 standard approved by the Ethereum community.
 
-Application can be found here:
+Application can be found here: https://cryptomons.herokuapp.com/
